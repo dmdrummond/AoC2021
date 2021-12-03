@@ -1,7 +1,7 @@
 fun main() {
 
     fun part1(input: List<String>): Int {
-        val sizeOfInput = input[0].length // Newline character
+        val sizeOfInput = input[0].length
         val mostCommonThreshold = input.size / 2
 
         val bitCount = IntArray(sizeOfInput) { index ->
@@ -29,7 +29,7 @@ fun main() {
             var values = input
             for (i in 0 until sizeOfInput) {
                 val (ones, zeros) = values.partition { it[i] == '1' }
-                values = keepLogic(ones, zeros) //if (ones.size >= zeros.size) ones else zeros
+                values = keepLogic(ones, zeros)
                 if (values.size == 1) return values[0]
             }
             throw Exception("Uh oh")
