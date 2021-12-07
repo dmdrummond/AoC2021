@@ -3,7 +3,6 @@ import kotlin.math.min
 import kotlin.math.max
 import kotlin.math.sign
 
-
 fun main() {
 
     fun createPoints(input: String, processDiagonals: Boolean): List<Point> {
@@ -11,10 +10,7 @@ fun main() {
         val (x1Str, y1Str) = input.substring(0, arrowStart - 1).split(",")
         val (x2Str, y2Str) = input.substring(arrowStart + 3).split(",")
 
-        val x1 = x1Str.toInt()
-        val x2 = x2Str.toInt()
-        val y1 = y1Str.toInt()
-        val y2 = y2Str.toInt()
+        val (x1, x2, y1, y2) = listOf(x1Str, x2Str, y1Str, y2Str).map { it.toInt() }
         return when {
             x1 == x2 -> {
                 //vertical line
@@ -32,18 +28,17 @@ fun main() {
                 val signX = sign((x2 - x1).toDouble()).toInt()
                 val signY = sign((y2 - y1).toDouble()).toInt()
 
-                val list = List(((x2-x1) * signX) + 1) {
+                List(((x2-x1) * signX) + 1) {
                     Point(x1 + (it * signX), y1 + (it * signY))
                 }
-                list
             }
             else -> emptyList()
         }
     }
 
-    fun part1(input: List<String>): Int {
+    fun process(input: List<String>, processDiagonals: Boolean): Int {
         return input
-            .map { createPoints(it, false) }
+            .map { createPoints(it, processDiagonals) }
             .flatten()
             .groupingBy { it.toString() }
             .eachCount()
@@ -51,14 +46,12 @@ fun main() {
             .count()
     }
 
+    fun part1(input: List<String>): Int {
+        return process(input, false)
+    }
+
     fun part2(input: List<String>): Int {
-        return input
-            .map { createPoints(it, true) }
-            .flatten()
-            .groupingBy { it.toString() }
-            .eachCount()
-            .filterValues { it >= 2 }
-            .count()
+       return process(input, true)
     }
 
     val testInput = readInput("Day05_test")
